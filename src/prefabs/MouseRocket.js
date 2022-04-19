@@ -13,7 +13,7 @@ class MouseRocket extends Phaser.GameObjects.Sprite {
 
     update() {
         // left/right movement
-        if (this.x >= borderUISize + this.width && this.x <= game.config.width - borderUISize - this.width) {
+        if (this.scene.input.activePointer.x >= borderUISize + this.width && this.scene.input.activePointer.x <= game.config.width - borderUISize - this.width) {
             this.x = this.scene.input.activePointer.x;
         }
         // fire button
