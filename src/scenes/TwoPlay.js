@@ -111,6 +111,7 @@ class TwoPlay extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or', scoreConfig).setOrigin(0.5);
             this.add.text(game.config.width/2, game.config.height/2 + 100, '(Space) for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
+            this.playSong.stop();
         }, null, this);
 
         this.timeRem = game.settings.gameTimer/1000;
