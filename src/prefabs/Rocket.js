@@ -15,14 +15,13 @@ class Rocket extends Phaser.GameObjects.Sprite {
 
     update() {
         // left/right movement
-        if (!this.isFiring) {
-            if (this.leftKey.isDown && this.x >= borderUISize + this.width) {
-                this.x -= this.moveSpeed;
-            }
-            else if (this.rightKey.isDown && this.x <= game.config.width - borderUISize - this.width) {
-                this.x += this.moveSpeed;
-            }
+        if (this.leftKey.isDown && this.x >= borderUISize + this.width) {
+            this.x -= this.moveSpeed;
         }
+        else if (this.rightKey.isDown && this.x <= game.config.width - borderUISize - this.width) {
+            this.x += this.moveSpeed;
+        }
+
         // fire button
         if (Phaser.Input.Keyboard.JustDown(this.fireKey) && !this.isFiring) {
             this.isFiring = true;

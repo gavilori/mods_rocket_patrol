@@ -30,6 +30,7 @@ class Play extends Phaser.Scene {
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // add rocket (p1)
         this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'p1rocket', 0, keyLEFT, keyRIGHT, keyUP).setOrigin(0.5, 0);
@@ -74,6 +75,13 @@ class Play extends Phaser.Scene {
             fixedWidth: 100
         };
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
+        scoreConfig.backgroundColor = "#8775D4";
+        scoreConfig.color = "#18015D";
+
+        this.timerText = this.add.text(game.config.width/2, borderUISize + borderPadding*3.65, game.settings.gameTimer, scoreConfig).setOrigin(0.5);
+
+        scoreConfig.backgroundColor = "#F3B141";
+        scoreConfig.color = "#843605";
 
         // GAME OVER flag
         this.gameOver = false;
@@ -87,9 +95,21 @@ class Play extends Phaser.Scene {
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 100, '(Space) for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
+
+        this.timeRem = game.settings.gameTimer/1000;
+
+        this.timer = this.time.addEvent({
+            delay: 1000,
+            callback: () => {
+                this.timeRem -= 1;
+            },
+            callbackScope: this,
+            repeat: game.settings.gameTimer/1000 - 1
+        });
         
         // increase speed by 3 after 30-sec
         this.speedIncrease = this.time.delayedCall(30000, () => {
@@ -98,12 +118,15 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+
+        this.timerText.text = this.timeRem;
+
         // check key input for restart
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
         }
 
-        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keySPACE)) {
             this.scene.start("menuScene");
         }
         this.starfield.tilePositionX -= 3;
