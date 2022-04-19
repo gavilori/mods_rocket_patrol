@@ -91,10 +91,10 @@ class TwoPlay extends Phaser.Scene {
         // GAME OVER flag
         this.gameOver = false;
 
-        // FIXME: bgm
-        // this.playSong = this.sound.add('bgm');
-        // this.playSong.play();
-        // this.playSong.loop = true;
+        // bgm
+        this.playSong = this.sound.add('bgm');
+        this.playSong.play();
+        this.playSong.loop = true;
 
         // play clock
         scoreConfig.fixedWidth = 0;

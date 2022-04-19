@@ -11,7 +11,6 @@ class Play extends Phaser.Scene {
         this.load.image('starfield', './assets/starfield.png');
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
         this.load.spritesheet('explosion2', './assets/explosion2.png', {frameWidth: 38, frameHeight: 20, startFrame: 0, endFrame: 9});
-        console.log('preload successful');
     }
 
     create() {
@@ -33,7 +32,11 @@ class Play extends Phaser.Scene {
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         // add rocket (p1)
+        if (game.settings.mouseMode) {
+            this.p1Rocket = new MouseRocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'p1rocket', 0).setOrigin(0.5, 0);
+        } else {
         this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'p1rocket', 0, keyLEFT, keyRIGHT, keyUP).setOrigin(0.5, 0);
+        }
 
         // add spaceships (x4)
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30).setOrigin(0, 0);
@@ -86,10 +89,10 @@ class Play extends Phaser.Scene {
         // GAME OVER flag
         this.gameOver = false;
 
-        // FIXME: bgm
-        // this.playSong = this.sound.add('bgm');
-        // this.playSong.play();
-        // this.playSong.loop = true;
+        // bgm
+        this.playSong = this.sound.add('bgm');
+        this.playSong.play();
+        this.playSong.loop = true;
 
         // play clock
         scoreConfig.fixedWidth = 0;
