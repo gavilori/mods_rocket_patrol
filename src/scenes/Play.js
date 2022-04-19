@@ -78,6 +78,8 @@ class Play extends Phaser.Scene {
             fixedWidth: 100
         };
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
+        scoreConfig.backgroundColor = "#00FFFF";
+        this.scoreRight = this.add.text(game.config.width - borderUISize*4 - borderPadding*2, borderUISize + borderPadding*2, game.highScore, scoreConfig);
         scoreConfig.backgroundColor = "#8775D4";
         scoreConfig.color = "#18015D";
 
@@ -97,7 +99,14 @@ class Play extends Phaser.Scene {
         // play clock
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
+            if (this.p1Score > game.highScore) {
+                this.add.text(game.config.width/2, game.config.height/2, 'NEW HIGH SCORE', scoreConfig).setOrigin(0.5);
+                game.highScore = this.p1Score;
+                this.scoreRight.text = game.highScore;
+            }
+            else {
+                this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
+            }
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or', scoreConfig).setOrigin(0.5);
             this.add.text(game.config.width/2, game.config.height/2 + 100, '(Space) for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
