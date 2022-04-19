@@ -30,7 +30,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
         }
         // if fired, move up
         if (this.isFiring && this.y >= borderUISize * 3 + borderPadding) {
-            this.y -= this.moveSpeed;
+            this.y -= this.moveSpeed*3;
         }
         // reset on miss
         if (this.y <= borderUISize * 3 + borderPadding) {
